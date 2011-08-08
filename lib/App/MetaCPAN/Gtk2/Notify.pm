@@ -3,11 +3,14 @@ package App::MetaCPAN::Gtk2::Notify;
 use 5.006;
 use strict;
 use warnings;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use JSON;
 use LWP::UserAgent;
 use Gtk2::Notify -init => 'MetaCPAN_recent';
+use File::Temp ();
+use File::Spec;
+use File::Slurp qw(write_file);
 
 =head1 NAME
 
@@ -81,17 +84,19 @@ sub show_recent {
     my $recent = shift;
 
     # skip notifying on first run
-    if (%prev_id) {
+    if ( %prev_id ) {
         for ( reverse @$recent ) {
             next if $prev_id{ $_->{id} };
-            my $auth_name = get_author( $_->{author} );
-            Gtk2::Notify->new( "$auth_name ($_->{author})", "uploaded $_->{name}" )->show;
+            my ( $auth_name, $avatar ) = @{ get_author( $_->{author} ) };
+            Gtk2::Notify->new( "$auth_name ($_->{author})", "uploaded $_->{name}", $avatar || () )
+              ->show;
         }
     }
     %prev_id = map { $_ => 1 } map { $_->{id} } @$recent;
 }
 
 my %authors;
+my $tmpdir = File::Temp->newdir;
 
 =head2 get_author($cpan_id)
 
@@ -104,11 +109,20 @@ sub get_author {
     unless ( $authors{$author} ) {
         my $resp = $ua->get("http://api.metacpan.org/v0/author/$author");
         if ( $resp->is_success ) {
-            my $res = JSON::decode_json( $resp->content );
-            $authors{$author} = $res->{name};
+            my $res         = JSON::decode_json( $resp->content );
+            my $avatar      = $ua->get( $res->{gravatar_url} );
+            my $avatar_file = File::Spec->catfile( $tmpdir, "$author.jpg" );
+            if ( $avatar->is_success ) {
+                write_file( $avatar_file, $avatar->content );
+                $avatar_file = "file://$avatar_file";
+            }
+            else {
+                $avatar_file = undef;
+            }
+            $authors{$author} = [ $res->{name}, $avatar_file ];
         }
         else {
-            $authors{$author} = " ";
+            $authors{$author} = [ " ", undef ];
         }
     }
     return $authors{$author};

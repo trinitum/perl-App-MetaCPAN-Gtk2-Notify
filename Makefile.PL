@@ -11,7 +11,9 @@ build_requires 'Test::More';
 
 requires 'JSON';
 requires 'LWP::UserAgent';
+requires 'LWP::Protocol::https';
 requires 'Gtk2::Notify';
+requires 'File::Slurp';
 
 auto_install;
 
