@@ -10,3 +10,6 @@ pm_to_blib*
 cover_db
 pod2htm*.tmp
 App-MetaCPAN-Gtk2-Notify-*
+inc/
+*META*
+*.bak
