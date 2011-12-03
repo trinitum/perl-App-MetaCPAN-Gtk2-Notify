@@ -1,5 +1,9 @@
 Revision history for App-MetaCPAN-Gtk2-Notify
 
+0.03 Sun Dec  4 2011 Pavel Shaydo <zwon@cpan.org>
+    * Fix icons' urls, they were broken in my xfce with libnotify 0.7.4
+    * Add link to distribution page on metacpan into notification
+
 0.02 Mon Aug  8 2011 Pavel Shaydo <zwon@cpan.org>
     * Show avatars
 
