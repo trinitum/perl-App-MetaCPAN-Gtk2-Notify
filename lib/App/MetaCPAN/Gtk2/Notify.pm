@@ -85,12 +85,13 @@ Show notifications about recent packages
 sub show_recent {
     my $recent = shift;
 
-    # skip notifying on first run
+    # skip notifying on a first run
     if (%prev_id) {
         for ( reverse @$recent ) {
             next if $prev_id{ $_->{id} };
             my ( $auth_name, $avatar ) = @{ get_author( $_->{author} ) };
-            Gtk2::Notify->new( "$auth_name ($_->{author})", "uploaded $_->{name}", $avatar || () )
+            my $url = "https://metacpan.org/release/$_->{author}/$_->{name}";
+            Gtk2::Notify->new( "$auth_name ($_->{author})", "uploaded <a href='$url'>$_->{name}</a>", $avatar || () )
               ->show;
         }
     }
