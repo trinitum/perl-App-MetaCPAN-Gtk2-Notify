@@ -114,7 +114,7 @@ sub get_author {
             my $avatar_file = File::Spec->catfile( $tmpdir, "$author.jpg" );
             if ( $avatar->is_success ) {
                 write_file( $avatar_file, $avatar->content );
-                $avatar_file = "file://$avatar_file";
+                $avatar_file = "$avatar_file";
             }
             else {
                 $avatar_file = undef;
