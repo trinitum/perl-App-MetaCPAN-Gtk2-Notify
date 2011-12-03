@@ -45,7 +45,11 @@ This starts notifier.
 
 =cut
 
+my %prev_id;
+
 sub run {
+    my ( $class, %params ) = @_;
+    $prev_id{1} = 1 if $params{debug};
     while (1) {
         my @recent = get_recent();
         show_recent( \@recent ) if @recent;
@@ -72,8 +76,6 @@ sub get_recent {
     }
 }
 
-my %prev_id;
-
 =head2 show_recent(\@recent)
 
 Show notifications about recent packages
@@ -84,7 +86,7 @@ sub show_recent {
     my $recent = shift;
 
     # skip notifying on first run
-    if ( %prev_id ) {
+    if (%prev_id) {
         for ( reverse @$recent ) {
             next if $prev_id{ $_->{id} };
             my ( $auth_name, $avatar ) = @{ get_author( $_->{author} ) };

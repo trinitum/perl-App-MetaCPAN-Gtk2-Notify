@@ -3,8 +3,14 @@
 use strict;
 use warnings;
 
+my %params;
+my $arg = shift;
+if ( $arg && $arg eq '-debug' ) {
+    $params{debug} = 1;
+}
+
 use App::MetaCPAN::Gtk2::Notify;
-App::MetaCPAN::Gtk2::Notify->run();
+App::MetaCPAN::Gtk2::Notify->run(%params);
 
 =head1 NAME
 
