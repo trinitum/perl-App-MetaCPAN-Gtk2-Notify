@@ -13,3 +13,4 @@ App-MetaCPAN-Gtk2-Notify-*
 inc/
 *META*
 *.bak
+*.swp
