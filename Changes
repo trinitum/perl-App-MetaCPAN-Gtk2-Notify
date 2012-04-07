@@ -1,5 +1,9 @@
 Revision history for App-MetaCPAN-Gtk2-Notify
 
+0.04 Sat Apr  7 2012 Pavel Shaydo <zwon@cpan.org>
+    * Reinitialize Gtk::Notify every time before sending notifications.
+      Fixes problem with xfce4-notifyd
+
 0.03 Sun Dec  4 2011 Pavel Shaydo <zwon@cpan.org>
     * Fix icons' urls, they were broken in my xfce with libnotify 0.7.4
     * Add link to distribution page on metacpan into notification
