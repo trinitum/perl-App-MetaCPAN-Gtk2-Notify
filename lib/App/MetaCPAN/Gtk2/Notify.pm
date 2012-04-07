@@ -7,7 +7,7 @@ our $VERSION = '0.03';
 
 use JSON;
 use LWP::UserAgent;
-use Gtk2::Notify -init => 'MetaCPAN_recent';
+use Gtk2::Notify;
 use File::Temp ();
 use File::Spec;
 use File::Slurp qw(write_file);
@@ -87,6 +87,7 @@ sub show_recent {
 
     # skip notifying on a first run
     if (%prev_id) {
+        Gtk2::Notify->init('MetaCPAN_recent');
         for ( reverse @$recent ) {
             next if $prev_id{ $_->{id} };
             my ( $auth_name, $avatar ) = @{ get_author( $_->{author} ) };
@@ -94,6 +95,7 @@ sub show_recent {
             Gtk2::Notify->new( "$auth_name ($_->{author})", "uploaded <a href='$url'>$_->{name}</a>", $avatar || () )
               ->show;
         }
+        Gtk2::Notify->uninit;
     }
     %prev_id = map { $_ => 1 } map { $_->{id} } @$recent;
 }
