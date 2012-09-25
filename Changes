@@ -1,5 +1,9 @@
 Revision history for App-MetaCPAN-Gtk2-Notify
 
+0.05 Tue Sep 25 2012 Pavel Shaydo <zwon@cpan.org>
+    * set User-Agent header
+    * use plain ExtUtils::MakeMaker instead of Module::Install
+
 0.04 Sat Apr  7 2012 Pavel Shaydo <zwon@cpan.org>
     * Reinitialize Gtk::Notify every time before sending notifications.
       Fixes problem with xfce4-notifyd
