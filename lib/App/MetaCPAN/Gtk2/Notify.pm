@@ -37,7 +37,7 @@ my $post_data  = JSON::encode_json(
     }
 );
 
-my $ua = LWP::UserAgent->new;
+my $ua = LWP::UserAgent->new(agent => "MetaCPAN Notify/$VERSION");
 
 =head2 run
 
